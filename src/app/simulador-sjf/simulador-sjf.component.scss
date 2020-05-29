@@ -1,0 +1,12 @@
+button, input{
+    border-radius: 2rem;
+}
+
+label{
+    font-family: "Lato", sans-serif;
+}
+
+
+::ng-deep #chart {
+    height: 440px;
+}

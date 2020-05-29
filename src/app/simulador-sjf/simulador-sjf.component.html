@@ -1,0 +1,158 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>
+                INGRESO DE PROCESOS
+            </h4>
+            <div class="container my-5">
+                <form (ngSubmit)="addProceso()">
+                    <div class="form-group">
+                        <label for="quantum">Quantum</label>
+                        <input type="number" class="form-control" id="quantum" aria-describedby="quantum" name="quantum"
+                            [(ngModel)]="quantum">
+                    </div>
+                    <div class="form-group">
+                        <label for="Proceso">PROCESO</label>
+                        <input type="text" class="form-control" id="Proceso" aria-describedby="nombreProceso"
+                            name="procesoNombre" [(ngModel)]="procesoNombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="RafagaCPU">RÁFAGA CPU</label>
+                        <input type="number" class="form-control" id="RafagaCPU" aria-describedby="rafagaCPU"
+                            name="rafagaCPU" [(ngModel)]="rafagaCPU">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tiempoLlegada">TIEMPO DE LLEGADA</label>
+                        <input type="number" class="form-control" id="tiempoLlegada" aria-describedby="tLlegada"
+                            name="tLlegada" [(ngModel)]="tLlegada">
+                    </div>
+                    <div class="form-group">
+                        <label for="tprioridad">PRIORIDAD</label>
+                        <input type="number" class="form-control" id="prioridad" aria-describedby="prioridad"
+                            name="prioridad" [(ngModel)]="prioridad">
+                    </div>
+                    <button type="submit" class="btn bg-dark text-light my-3">AGREGAR</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>LISTA DE PROCESOS</h4>
+            <div class="container my-5">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">PROCESO</th>
+                            <th scope="col">RÁFAGA CPU</th>
+                            <th scope="col">LLEGADA</th>
+                            <th scope="col">PRIORIDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let proceso of procesos; index as i">
+                            <th scope="row">{{proceso.procesoNombre}}</th>
+                            <td>{{proceso. rafagaCPU}}</td>
+                            <td>{{proceso.tLlegada}}</td>
+                            <td>{{proceso.prioridad}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5>Quantum: {{quantum}}</h5>
+            <button type="button" class="btn bg-dark text-light my-3" data-toggle="modal" data-target="#gestionProcesos"
+                (click)="ordenarProcesosTiempo()">
+                GESTIONAR</button>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="gestionProcesos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">GESTIÓN DE PROCESOS</h5>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="container my-5">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">PROCESO</th>
+                                <th scope="col">RÁFAGA CPU</th>
+                                <th scope="col">LLEGADA</th>
+                                <th scope="col">PRIORIDAD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let proceso of procesos; index as i">
+                                <th scope="row">{{proceso.procesoNombre}}</th>
+                                <td>{{proceso. rafagaCPU}}</td>
+                                <td>{{proceso.tLlegada}}</td>
+                                <td>{{proceso.prioridad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>Quantum: {{quantum}}</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <h5>Tiempos de espera:</h5>
+                                <li class="list-group-item" *ngFor="let proceso of procesos; index as i">
+                                    {{proceso.procesoNombre}}: {{proceso.tEspera}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <h5>Tiempos de Retorno:</h5>
+                                <li class="list-group-item" *ngFor="let proceso of procesos; index as i">
+                                    {{proceso.procesoNombre}}: {{proceso.tRetorno}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+                    <button type="button" class="btn bg-dark text-light" data-toggle="modal"
+                        data-target="#gantt">GANTT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="gantt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">DIAGRAMA DE GANTT</h5>
+                </div>
+                <div class="modal-body">
+                    <dx-chart id="chart" palette="violet" title="Procesos" [dataSource]="procesos">
+                        <dxo-common-series-settings argumentField="procesoNombre" type="rangeBar"></dxo-common-series-settings>
+                        <dxi-value-axis>
+                            <dxo-title text="Tiempo"></dxo-title>
+                        </dxi-value-axis>
+                        <dxo-argument-axis>
+                            <dxo-label format="procesoNombre"></dxo-label>
+                        </dxo-argument-axis>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxo-legend verticalAlignment="bottom" horizontalAlignment="center"></dxo-legend>
+                        <dxi-series rangeValue1Field="tRespuestaAux" rangeValue2Field="tRetorno" name="TIEMPO">
+                        </dxi-series>
+                    </dx-chart>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+                </div>
+            </div>
+        </div>
+    </div>

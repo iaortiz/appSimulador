@@ -24,7 +24,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              {
+                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -88,7 +91,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              {
+                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -117,8 +123,13 @@
               "devServerTarget": "appSimulador:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "appSimulador"
 }
